@@ -5,7 +5,7 @@ description = "MCP server for Milvus"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "mcp>=1.1.2",
+    "mcp[cli]>=1.1.2",
     "pymilvus>=2.5.1",
     "click>=8.0.0",
 ]
