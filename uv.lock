@@ -198,7 +198,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.0.0" },
-    { name = "mcp", specifier = ">=1.1.2" },
+    { name = "mcp", extras = ["cli"], specifier = ">=1.1.2" },
     { name = "pymilvus", specifier = ">=2.5.1" },
 ]
 

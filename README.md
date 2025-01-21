@@ -1,20 +1,14 @@
 # MCP Server for Milvus
 
-A Model Context Protocol (MCP) server that provides access to Milvus vector database functionality.
+> The Model Context Protocol (MCP) is an open protocol that enables seamless integration between LLM applications and external data sources and tools. Whether you’re building an AI-powered IDE, enhancing a chat interface, or creating custom AI workflows, MCP provides a standardized way to connect LLMs with the context they need.
 
-## Installation
-
-```bash
-pip install uv  # If you don't have uv installed
-pip install -e .  # Install in development mode
-```
+This repository contains a MCP server that provides access to [Milvus](https://milvus.io/) vector database functionality.
 
 ## Usage with Claude Desktop
 
 1. Install Claude Desktop from https://claude.ai/download
 2. Open your Claude Desktop configuration:
    - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
 3. Add the following configuration:
 ```json
