@@ -4,6 +4,14 @@
 
 This repository contains a MCP server that provides access to [Milvus](https://milvus.io/) vector database functionality.
 
+## Supported Applications
+
+This MCP server can be used with various LLM applications that support the Model Context Protocol:
+
+- **Claude Desktop**: Anthropic's desktop application for Claude
+- **Cursor**: AI-powered code editor with MCP support in its Composer feature
+- **Custom MCP clients**: Any application implementing the MCP client specification
+
 ## Usage with Claude Desktop
 
 1. Install Claude Desktop from https://claude.ai/download
@@ -30,6 +38,62 @@ This repository contains a MCP server that provides access to [Milvus](https://m
 ```
 
 4. Restart Claude Desktop
+
+## Usage with Cursor
+
+[Cursor also supports MCP](https://docs.cursor.com/context/model-context-protocol) tools through its Agent feature in Composer. You can add the Milvus MCP server to Cursor in two ways:
+
+### Option 1: Using Cursor Settings UI
+
+1. Go to `Cursor Settings` > `Features` > `MCP`
+2. Click on the `+ Add New MCP Server` button
+3. Fill out the form:
+   - **Type**: Select `stdio` (since you're running a command)
+   - **Name**: `milvus`
+   - **Command**: `/PATH/TO/uv --directory /path/to/mcp-server-milvus/src/mcp_server_milvus run server.py --milvus-uri http://127.0.0.1:19530`
+   
+   > ⚠️ Note: Use `127.0.0.1` instead of `localhost` to avoid potential DNS resolution issues.
+
+### Option 2: Using Project-specific Configuration (Recommended)
+
+Create a `.cursor/mcp.json` file in your project root:
+
+1. Create the `.cursor` directory in your project root:
+   ```bash
+   mkdir -p /path/to/your/project/.cursor
+   ```
+
+2. Create a `mcp.json` file with the following content:
+   ```json
+   {
+     "mcpServers": {
+       "milvus": {
+         "command": "/PATH/TO/uv",
+         "args": [
+           "--directory",
+           "/path/to/mcp-server-milvus/src/mcp_server_milvus",
+           "run",
+           "server.py",
+           "--milvus-uri",
+           "http://127.0.0.1:19530"
+         ]
+       }
+     }
+   }
+   ```
+
+3. Restart Cursor or reload the window
+
+After adding the server, you may need to press the refresh button in the MCP settings to populate the tool list. The Composer Agent will automatically use the Milvus tools when relevant to your queries.
+
+### Verifying the Integration
+
+To verify that Cursor has successfully integrated with your Milvus MCP server:
+
+1. Open Cursor Settings > Features > MCP
+2. Check that "Milvus" appears in the list of MCP servers
+3. Verify that the tools are listed (e.g., milvus_list_collections, milvus_vector_search, etc.)
+4. If the server is enabled but shows an error, check the Troubleshooting section below
 
 ## Available Tools
 
