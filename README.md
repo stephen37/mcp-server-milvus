@@ -4,6 +4,31 @@
 
 This repository contains a MCP server that provides access to [Milvus](https://milvus.io/) vector database functionality.
 
+## Prerequisites
+
+Before using this MCP server, ensure you have:
+
+- Python 3.10 or higher
+- A running [Milvus](https://milvus.io/) instance (local or remote)
+- [uv](https://github.com/astral-sh/uv) installed (recommended for running the server)
+
+## Usage
+
+The recommended way to use this MCP server is to run it directly with `uv` without installation. This is how both Claude Desktop and Cursor are configured to use it in the examples below.
+
+If you want to clone the repository:
+
+```bash
+git clone https://github.com/zilliztech/mcp-server-milvus.git
+cd mcp-server-milvus
+```
+
+Then you can run the server directly:
+
+```bash
+uv run src/mcp_server_milvus/server.py --milvus-uri http://localhost:19530
+```
+
 ## Supported Applications
 
 This MCP server can be used with various LLM applications that support the Model Context Protocol:
@@ -249,6 +274,8 @@ uv run server.py --milvus-uri http://localhost:19530
 
 ### Using Claude Desktop 
 
+#### Example 1: Listing Collections
+
 ```
 What are the collections I have in my Milvus DB?
 ```
@@ -268,3 +295,81 @@ Here are the collections in your Milvus database:
 6. customized_setup
 7. streaming_rag_demo
 ```
+
+#### Example 2: Searching for Documents
+
+```
+Find documents in my text_collection that mention "machine learning"
+```
+
+Claude will use the full-text search capabilities of Milvus to find relevant documents:
+
+```
+I'll search for documents about machine learning in your text_collection.
+
+> View result from milvus-text-search from milvus (local)
+
+Here are the documents I found that mention machine learning:
+[Results will appear here based on your actual data]
+```
+
+### Using Cursor
+
+#### Example: Creating a Collection
+
+In Cursor's Composer, you can ask:
+
+```
+Create a new collection called 'articles' in Milvus with fields for title (string), content (string), and a vector field (128 dimensions)
+```
+
+Cursor will use the MCP server to execute this operation:
+
+```
+I'll create a new collection called 'articles' with the specified fields.
+
+> View result from milvus-create-collection from milvus (local)
+
+Collection 'articles' has been created successfully with the following schema:
+- title: string
+- content: string
+- vector: float vector[128]
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Connection Errors
+
+If you see errors like "Failed to connect to Milvus server":
+
+1. Verify your Milvus instance is running: `docker ps` (if using Docker)
+2. Check the URI is correct in your configuration
+3. Ensure there are no firewall rules blocking the connection
+4. Try using `127.0.0.1` instead of `localhost` in the URI
+
+#### Authentication Issues
+
+If you see authentication errors:
+
+1. Verify your `MILVUS_TOKEN` is correct
+2. Check if your Milvus instance requires authentication
+3. Ensure you have the correct permissions for the operations you're trying to perform
+
+#### Tool Not Found
+
+If the MCP tools don't appear in Claude Desktop or Cursor:
+
+1. Restart the application
+2. Check the server logs for any errors
+3. Verify the MCP server is running correctly
+4. Press the refresh button in the MCP settings (for Cursor)
+
+### Getting Help
+
+If you continue to experience issues:
+
+1. Check the [GitHub Issues](https://github.com/zilliztech/mcp-server-milvus/issues) for similar problems
+2. Join the [Zilliz Community Discord](https://discord.gg/zilliz) for support
+3. File a new issue with detailed information about your problem
